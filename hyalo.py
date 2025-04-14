@@ -27,21 +27,19 @@ def main(stdscr):
     while(True):
         control_char = stdscr.getkey()
         if mode == 'viewer':
-            action = process_viewer_input(control_char)
-            if is_viewer_action_correct(action):
-                perform_viewer_action(action)
-            elif is_action_quit(action):
+            if is_viewer_action_correct(control_char):
+                perform_viewer_action(control_char)
+            elif is_action_quit(control_char):
                 exit_program(0)
-            elif is_action_switchmode(action):
-                switch_mode(action)
+            elif is_action_switchmode(control_char):
+                switch_mode(control_char)
         elif mode == 'filebrowser':
-            action = process_filebrowser_input(control_char)
-            if is_filebrowser_action_correct(action):
-                perform_filebrowser_action(action)
-            elif is_action_quit(action):
+            if is_filebrowser_action_correct(control_char):
+                perform_filebrowser_action(control_char)
+            elif is_action_quit(control_char):
                 exit_program(0)
-            elif is_action_switchmode(action):
-                switch_mode(action)
+            elif is_action_switchmode(control_char):
+                switch_mode(control_char)
 
 # start the program in the default mode
 curses.wrapper(main)
