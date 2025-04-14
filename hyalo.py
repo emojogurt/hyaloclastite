@@ -42,11 +42,6 @@ def main(stdscr):
                 exit_program(0)
             elif is_action_switchmode(action):
                 switch_mode(action)
-        # this is probably useless, editor should not be a mode
-        elif mode == 'editor':
-            sleep(0.2)
-            pass
-        sleep(0.05)
 
 # start the program in the default mode
 curses.wrapper(main)
