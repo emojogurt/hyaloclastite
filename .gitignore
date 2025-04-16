@@ -6,6 +6,9 @@ __pycache__/
 # vim files
 **.swp
 
+# jetbrains project settings
+.idea
+
 # C extensions
 *.so
 
