@@ -17,5 +17,9 @@ class TestViewer(unittest.TestCase):
     def test_is_viewer_action_correct_positive(self):
         for action in {ord('e'), curses.KEY_UP, curses.KEY_DOWN, curses.KEY_LEFT, curses.KEY_RIGHT, curses.KEY_HOME, curses.KEY_END}:
             self.assertTrue(is_viewer_action_correct(action))
-            
 
+
+    def test_is_viewer_action_correct_negative(self):
+        for action in {ord('z'), curses.KEY_BACKSPACE, ord('4')}:
+            self.assertFalse(is_viewer_action_correct(action))
+            self.assertIsNotNone(is_viewer_action_correct(action))
