@@ -11,15 +11,13 @@ from classes.hyaloclastite import hyaloclastite
 
 class TestInitialise(unittest.TestCase):
     def test_create_session(self):
-        sess = hyaloclastite(1,2,3)
+        sess = hyaloclastite(1,2)
         self.assertTrue(isinstance(sess,hyaloclastite))
 
     def test_fields_initialised(self):
         a = 'a'
         b = 'b'
-        c = 'c'
-        sess = hyaloclastite(a,b,c)
-        self.assertEqual(sess.mainwin, a)
-        self.assertEqual(sess.mode, b)
-        self.assertEqual(sess.vault, c)
+        sess = hyaloclastite(a,b)
+        self.assertEqual(sess.mode, a)
+        self.assertEqual(sess.vault, b)
 
