@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import unittest
-import curses
 import sys
 from os import path
 
