@@ -3,8 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# vim files
+# vim swap files
 **.swp
+
+# exclude scraps
+scraps
 
 # jetbrains project settings
 .idea
