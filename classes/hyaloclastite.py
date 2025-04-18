@@ -10,12 +10,19 @@ class Hyaloclastite:
         self.mode = initial_mode
         self.vault = vault
         self.exit_character = ord('q')
+        self.current_screen_contents = "Nothing to see here (yet)"
 
     def check_for_exit(self, control_char):
         if control_char == self.exit_character:
             return True
         else:
             return False
+
+    def draw(self, window):
+        """Displays previously prepared window contents to the given window"""
+        window.clear()
+        window.addstr(self.current_screen_contents)
+        window.refresh()
 
     def perform_filebrowser_action(self, window, control_char):
         pass
@@ -24,6 +31,7 @@ class Hyaloclastite:
         pass
 
     def dispatch_action(self, window, control_char):
+        """Sends the control character towards the appropriate handling function, depending on mode"""
         if self.mode == 'filebrowser':
             self.perform_filebrowser_action(window, control_char)
         elif self.mode == 'viewer':
@@ -31,19 +39,16 @@ class Hyaloclastite:
         else:
             raise IncorrectModeException
 
-    def draw(self, window):
-        pass
-
     def main(self, window, vault, mode):
         """Main loop of the program, taking care of gathering user input and providing it to appropriate functions"""
 
         while True:
-            self.draw(window)
-            sleep(0.1)
             control_char = window.getch()
             if self.check_for_exit(control_char):
                 return 0
             self.dispatch_action(window, control_char)
+            self.draw(window)
+            sleep(0.1)
 
     def run(self):
         """Starts the program with vault_name and initial_mode arguments.
