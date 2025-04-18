@@ -23,11 +23,13 @@ initial_mode = 'filebrowser'
 def main(stdscr, vault, mode):
     
     session = hyaloclastite(stdscr, mode, vault)
+    session.draw()
 
     while True:
         sleep(0.1)
         control_char = stdscr.getkey()
         session.perform_action(control_char)
+        session.draw()
 
 # start the program in the initial mode
 curses.wrapper(main, vault_name, initial_mode)

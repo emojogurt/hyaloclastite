@@ -6,5 +6,13 @@ class hyaloclastite:
         self.mode = initial_mode
         self.vault = vault
 
+    def perform_action():
+        pass
+
+    def draw():
+        pass
+
+
+
 
 
