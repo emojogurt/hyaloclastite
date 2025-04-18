@@ -20,4 +20,5 @@ vault_name = arguments.vault
 initial_mode = 'filebrowser'
 
 session = hyaloclastite(initial_mode, vault_name)
-session.run()
+rc = session.run()
+exit(rc)
