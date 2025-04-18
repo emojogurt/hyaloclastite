@@ -7,13 +7,13 @@ from unittest import mock
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-from classes.hyaloclastite import hyaloclastite
+from classes.hyaloclastite import Hyaloclastite
 import fakeCurses
 
 class TestQuit(unittest.TestCase):
     def setUp(self):
-        self.testsession = hyaloclastite('filebrowser', '.')
+        self.test_session = Hyaloclastite('filebrowser', '.')
 
     def test_quit_program(self):
         window = fakeCurses.windowretchar(ord('q'))
-        self.assertEqual(0, self.testsession.main(window,2,3))
+        self.assertEqual(0, self.test_session.main(window, 2, 3))

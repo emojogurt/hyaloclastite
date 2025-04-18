@@ -16,7 +16,7 @@ Dostępne mają być trzy tryby:
 Przełączanie pomiędzy trybami odbywa się za pomocą komend.
 
 ## Planowane etapy
-* POC: rudymentarna przeglądarka plików (byle zadziałała) + czytnik robiący z grubsza less nieprzetworzonego pliku i obsługujący wywoływanie edytora oraz wyjście do przeglądarki
+* POC: wyjście z programu + rudymentarna przeglądarka plików (byle zadziałała) + czytnik robiący z grubsza less nieprzetworzonego pliku i obsługujący wywoływanie edytora oraz wyjście do przeglądarki
 * Wstępny 1: Nawigacja w czytniku plików po linkach
 * Wstępny 2: Mały pretty print (zastępowanie linków odpowiednimi nazwami, wypisywanie list, wytłuszczanie tytułów)
 * Wstępny 3: obsługa pomocy 

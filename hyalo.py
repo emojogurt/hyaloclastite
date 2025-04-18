@@ -5,7 +5,7 @@
 
 import argparse
 
-from classes.hyaloclastite import hyaloclastite
+from classes.hyaloclastite import Hyaloclastite
 
 parser = argparse.ArgumentParser(prog = "hyalo.py",
                                  description = "Python curses program for terminal note-taking.")
@@ -19,6 +19,6 @@ vault_name = arguments.vault
 # this might be read from a config file in the future, or be set depending on start options
 initial_mode = 'filebrowser'
 
-session = hyaloclastite(initial_mode, vault_name)
+session = Hyaloclastite(initial_mode, vault_name)
 rc = session.run()
 exit(rc)
