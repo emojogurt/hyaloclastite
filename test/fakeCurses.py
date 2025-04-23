@@ -11,9 +11,11 @@ class WindowFakePrint:
         self.text = None
         self.prepared = None
         self.called_clear = False
+        self.called_refresh = False
     def clear(self):
         self.called_clear = True
     def refresh(self):
+        self.called_refresh = True
         self.text = self.prepared
     def addstr(self, text):
         self.prepared = text

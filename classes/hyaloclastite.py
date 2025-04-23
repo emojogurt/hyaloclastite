@@ -48,7 +48,6 @@ class Hyaloclastite:
                 return 0
             self.dispatch_action(window, control_char)
             self.draw(window)
-            sleep(0.1)
 
     def run(self):
         """Starts the program with vault_name and initial_mode arguments.
@@ -58,6 +57,7 @@ class Hyaloclastite:
         curses.curs_set(False)
         curses.cbreak()
         window.keypad(True)
+        window.nodelay(False)
 
         try:
             self.main(window, self.vault, self.mode)

@@ -4,7 +4,7 @@ import unittest
 import sys
 from os import path
 
-from test import fakeCurses
+import fakeCurses
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
@@ -18,6 +18,6 @@ class TestDraw(unittest.TestCase):
         sess.draw(window)
         self.assertEqual("test contents", window.text)
         self.assertTrue(window.called_clear)
-
+        self.assertTrue(window.called_refresh)
 
 

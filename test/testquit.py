@@ -8,7 +8,7 @@ from unittest import mock
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from classes.hyaloclastite import Hyaloclastite
-from test import fakeCurses
+import fakeCurses
 
 class TestQuit(unittest.TestCase):
     def setUp(self):
