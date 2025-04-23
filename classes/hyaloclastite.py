@@ -64,11 +64,11 @@ class Hyaloclastite:
         """Main loop of the program, taking care of gathering user input and providing it to appropriate functions"""
 
         while True:
+            self.draw(window)
             control_char = window.getch()
             if self.check_for_exit(control_char):
                 return 0
             self.dispatch_action(window, control_char)
-            self.draw(window)
 
     def run(self):
         """Starts the program with vault_name and initial_mode arguments.

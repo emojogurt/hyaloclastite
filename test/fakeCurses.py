@@ -3,6 +3,12 @@
 class WindowReturnChar:
     def __init__(self, retchar):
         self.retchar = retchar
+    def clear(self):
+        pass
+    def addstr(self, text):
+        pass
+    def refresh(self):
+        pass
     def getch(self):
         return self.retchar
 
