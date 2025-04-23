@@ -1,0 +1,37 @@
+#!/usr/bin/python
+
+import unittest
+import sys
+from os import path
+
+import fakeCurses
+
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
+from classes.hyaloclastite import Hyaloclastite
+
+class TestFilebrowser(unittest.TestCase):
+    def test_get_known_dir_contents(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        contents = [ fsobject.name for fsobject in sess.get_dir_contents() ]
+        self.assertIn('directory1', contents)
+        self.assertIn('file1', contents)
+        self.assertIn('file2', contents)
+
+    def test_create_screen_contents_filebrowser(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        contents = sess.create_screen_contents()
+        self.assertEqual("testvault1\n > directory1\n file1\n file2", contents)
+
+    def test_browse_known_contents(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.WindowFakePrint()
+        sess.draw(window)
+        self.assertEqual("testvault1\n > directory1\n file1\n file2", window.text)
+
+    
+
+

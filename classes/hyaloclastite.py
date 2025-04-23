@@ -1,16 +1,37 @@
 #!/usr/bin/python
 import curses 
 from time import sleep
+from os import scandir
+from os.path import basename
 
 class IncorrectModeException(Exception):
     pass
 
 class Hyaloclastite:
-    def __init__(self, initial_mode, vault):
-        self.mode = initial_mode
-        self.vault = vault
-        self.exit_character = ord('q')
-        self.current_screen_contents = "Nothing to see here (yet)"
+    def get_dir_contents(self):
+        vaultlist = scandir(self.vault)
+        return vaultlist
+
+    def create_screen_contents(self):
+        if self.mode == 'filebrowser':
+            screen_contents = basename(self.vault)
+            listing_dict = {}
+            for fsobject in self.get_dir_contents():
+                if fsobject.is_dir():
+                    listing_dict[fsobject.name] = True
+                elif fsobject.is_file():
+                    listing_dict[fsobject.name] = False
+            sorted_list = list(listing_dict.keys())
+            sorted_list.sort()
+            for listing_key in sorted_list:
+                listing_item_type = listing_dict[listing_key]
+                if listing_item_type:
+                    screen_contents += "\n > " + listing_key
+                else:
+                    screen_contents += "\n " + listing_key
+            return screen_contents
+        else:
+            return "Nothing to see here"
 
     def check_for_exit(self, control_char):
         if control_char == self.exit_character:
@@ -68,4 +89,10 @@ class Hyaloclastite:
             window.keypad(False)
             curses.echo()
             curses.endwin()
+
+    def __init__(self, initial_mode, vault):
+        self.mode = initial_mode
+        self.vault = vault
+        self.exit_character = ord('q')
+        self.current_screen_contents = self.create_screen_contents()
 
