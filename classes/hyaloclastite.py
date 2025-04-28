@@ -9,23 +9,25 @@ class IncorrectModeException(Exception):
 
 class Hyaloclastite:
     def get_dir_contents(self):
-        vaultlist = scandir(self.vault)
-        return vaultlist
+        raw_listing = scandir(self.current_directory)
+        listing_dict_unsorted = {}
+        for fsobject in raw_listing:
+            listing_dict_unsorted[fsobject.name] = fsobject
+
+        keylist = list(listing_dict_unsorted.keys())
+        keylist.sort()
+        
+        listing_dict = {}
+        for fsobjname in keylist:
+            listing_dict[fsobjname] = listing_dict_unsorted[fsobjname]
+        return listing_dict
 
     def create_screen_contents(self):
         if self.mode == 'filebrowser':
-            screen_contents = basename(self.vault)
-            listing_dict = {}
-            for fsobject in self.get_dir_contents():
-                if fsobject.is_dir():
-                    listing_dict[fsobject.name] = True
-                elif fsobject.is_file():
-                    listing_dict[fsobject.name] = False
-            sorted_list = list(listing_dict.keys())
-            sorted_list.sort()
-            for listing_key in sorted_list:
-                listing_item_type = listing_dict[listing_key]
-                if listing_item_type:
+            screen_contents = basename(self.current_directory)
+            listing_dict = self.get_dir_contents()
+            for listing_key,fsobject_entry in listing_dict.items():
+                if fsobject_entry.is_dir():
                     screen_contents += "\n > " + listing_key
                 else:
                     screen_contents += "\n " + listing_key
@@ -94,5 +96,8 @@ class Hyaloclastite:
         self.mode = initial_mode
         self.vault = vault
         self.exit_character = ord('q')
+        self.current_directory = self.vault
         self.current_screen_contents = self.create_screen_contents()
+        self.current_directory_listing = None
+        self.current_selected_file = None
 

@@ -14,7 +14,7 @@ class TestFilebrowser(unittest.TestCase):
     def test_get_known_dir_contents(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
-        contents = [ fsobject.name for fsobject in sess.get_dir_contents() ]
+        contents = list(fsobject.name for fsobject in sess.get_dir_contents().values())
         self.assertIn('directory1', contents)
         self.assertIn('file1', contents)
         self.assertIn('file2', contents)
