@@ -28,7 +28,7 @@ class Hyaloclastite:
         window.clear()
         if self.mode == 'filebrowser':
             window.addstr(basename(self.current_directory))
-            self.get_dir_contents()
+            
             for listing_key,fsobject_entry in self.current_directory_listing.items():
                 parameters = 0
                 if fsobject_entry.is_dir():
