@@ -19,7 +19,15 @@ class TestFilebrowser(unittest.TestCase):
         self.assertIn('file1', contents)
         self.assertIn('file2', contents)
 
-    def test_browse_known_contents(self):
+    def test_window_draw(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.WindowFakePrint()
+        sess.draw(window)
+        self.assertTrue(window.called_clear)
+        self.assertTrue(window.called_refresh)
+    
+    def test_correct_file_list_displayed(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.WindowFakePrint()

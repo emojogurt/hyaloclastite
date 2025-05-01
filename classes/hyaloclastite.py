@@ -22,23 +22,16 @@ class Hyaloclastite:
             listing_dict[fsobjname] = listing_dict_unsorted[fsobjname]
         return listing_dict
 
-    def create_screen_contents(self):
+    def draw(self, window):
+        window.clear()
         if self.mode == 'filebrowser':
-            screen_contents = basename(self.current_directory)
+            window.addstr(basename(self.current_directory))
             listing_dict = self.get_dir_contents()
             for listing_key,fsobject_entry in listing_dict.items():
                 if fsobject_entry.is_dir():
-                    screen_contents += "\n " + listing_key
+                    window.addstr("\n " + listing_key)
                 else:
-                    screen_contents += "\n " + listing_key
-            return screen_contents
-        else:
-            return "Nothing to see here"
-
-    def draw(self, window):
-        """Displays previously prepared window contents to the given window"""
-        window.clear()
-        window.addstr(self.current_screen_contents)
+                    window.addstr("\n " + listing_key)
         window.refresh()
 
     def perform_filebrowser_action(self, window, control_char):
@@ -97,7 +90,6 @@ class Hyaloclastite:
         self.vault = vault
         self.exit_character = ord('q')
         self.current_directory = self.vault
-        self.current_screen_contents = self.create_screen_contents()
         self.current_directory_listing = None
         self.current_selected_file = None
 
