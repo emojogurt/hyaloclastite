@@ -29,7 +29,7 @@ class Hyaloclastite:
             listing_dict = self.get_dir_contents()
             for listing_key,fsobject_entry in listing_dict.items():
                 if fsobject_entry.is_dir():
-                    window.addstr("\n " + listing_key)
+                    window.addstr("\n " + listing_key, curses.A_BOLD)
                 else:
                     window.addstr("\n " + listing_key)
         window.refresh()

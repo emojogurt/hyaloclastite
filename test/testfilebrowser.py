@@ -5,6 +5,7 @@ import sys
 from os import path
 
 import fakeCurses
+import curses
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
@@ -33,4 +34,13 @@ class TestFilebrowser(unittest.TestCase):
         window = fakeCurses.WindowFakePrint()
         sess.draw(window)
         self.assertEqual("testvault1\n directory1\n file1\n file2", window.gettext())
+
+    def test_directories_are_bolded(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.WindowFakePrint()
+        sess.draw(window)
+        self.assertTrue(curses.A_BOLD in window.text['\n directory1'])
+
+
 

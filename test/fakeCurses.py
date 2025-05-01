@@ -5,7 +5,7 @@ class WindowReturnChar:
         self.retchar = retchar
     def clear(self):
         pass
-    def addstr(self, text):
+    def addstr(self, *args):
         pass
     def refresh(self):
         pass
