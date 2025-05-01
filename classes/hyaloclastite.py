@@ -43,6 +43,9 @@ class Hyaloclastite:
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
             self.current_selected_file_number += 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
+        if control_char == curses.KEY_UP and self.current_selected_file_number > 0:
+            self.current_selected_file_number -= 1
+            self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
 
     def perform_viewer_action(self, window, control_char):
         pass
