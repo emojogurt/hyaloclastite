@@ -20,17 +20,16 @@ class Hyaloclastite:
         if self.current_selected_file not in keylist:
             self.current_selected_file = keylist[0]
         
-        listing_dict = {}
+        self.current_directory_listing = {}
         for fsobjname in keylist:
-            listing_dict[fsobjname] = listing_dict_unsorted[fsobjname]
-        return listing_dict
+            self.current_directory_listing[fsobjname] = listing_dict_unsorted[fsobjname]
 
     def draw(self, window):
         window.clear()
         if self.mode == 'filebrowser':
             window.addstr(basename(self.current_directory))
-            listing_dict = self.get_dir_contents()
-            for listing_key,fsobject_entry in listing_dict.items():
+            self.get_dir_contents()
+            for listing_key,fsobject_entry in self.current_directory_listing.items():
                 parameters = 0
                 if fsobject_entry.is_dir():
                     parameters = parameters | curses.A_BOLD
