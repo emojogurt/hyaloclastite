@@ -15,7 +15,7 @@ class WindowReturnChar:
 class WindowFakePrint:
     def __init__(self):
         self.text = None
-        self.prepared = None
+        self.prepared = {}
         self.called_clear = False
         self.called_refresh = False
     def clear(self):
@@ -23,5 +23,8 @@ class WindowFakePrint:
     def refresh(self):
         self.called_refresh = True
         self.text = self.prepared
-    def addstr(self, text):
-        self.prepared = text
+    def addstr(self, text, *args):
+        self.prepared[text] = args
+
+    def gettext(self):
+        return "".join(list(self.text.keys()))

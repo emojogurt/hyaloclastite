@@ -28,18 +28,12 @@ class Hyaloclastite:
             listing_dict = self.get_dir_contents()
             for listing_key,fsobject_entry in listing_dict.items():
                 if fsobject_entry.is_dir():
-                    screen_contents += "\n > " + listing_key
+                    screen_contents += "\n " + listing_key
                 else:
                     screen_contents += "\n " + listing_key
             return screen_contents
         else:
             return "Nothing to see here"
-
-    def check_for_exit(self, control_char):
-        if control_char == self.exit_character:
-            return True
-        else:
-            return False
 
     def draw(self, window):
         """Displays previously prepared window contents to the given window"""
@@ -61,6 +55,12 @@ class Hyaloclastite:
             self.perform_viewer_action(window, control_char)
         else:
             raise IncorrectModeException
+    
+    def check_for_exit(self, control_char):
+        if control_char == self.exit_character:
+            return True
+        else:
+            return False
 
     def main(self, window, vault, mode):
         """Main loop of the program, taking care of gathering user input and providing it to appropriate functions"""

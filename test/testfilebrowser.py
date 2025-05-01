@@ -19,19 +19,10 @@ class TestFilebrowser(unittest.TestCase):
         self.assertIn('file1', contents)
         self.assertIn('file2', contents)
 
-    def test_create_screen_contents_filebrowser(self):
-        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
-        sess = Hyaloclastite('filebrowser', test_location)
-        contents = sess.create_screen_contents()
-        self.assertEqual("testvault1\n > directory1\n file1\n file2", contents)
-
     def test_browse_known_contents(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.WindowFakePrint()
         sess.draw(window)
-        self.assertEqual("testvault1\n > directory1\n file1\n file2", window.text)
-
-    
-
+        self.assertEqual("testvault1\n directory1\n file1\n file2", window.gettext())
 
