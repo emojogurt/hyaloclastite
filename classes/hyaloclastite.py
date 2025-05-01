@@ -40,7 +40,7 @@ class Hyaloclastite:
         window.refresh()
 
     def perform_filebrowser_action(self, window, control_char):
-        if control_char == curses.KEY_DOWN:
+        if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
             self.current_selected_file_number += 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
 
