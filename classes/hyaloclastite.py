@@ -59,9 +59,13 @@ class Hyaloclastite:
         else:
             return False
 
+    def start(self):
+        if self.mode == 'filebrowser':
+            self.get_dir_contents()
+
     def main(self, window, vault, mode):
         """Main loop of the program, taking care of gathering user input and providing it to appropriate functions"""
-
+        self.start()
         while True:
             self.draw(window)
             control_char = window.getch()
