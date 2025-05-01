@@ -20,6 +20,12 @@ class TestFilebrowser(unittest.TestCase):
         self.assertIn('file1', contents)
         self.assertIn('file2', contents)
 
+    def test_first_entry_selected_at_entry(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        sess.get_dir_contents()
+        self.assertEqual('directory1', sess.current_selected_file)
+
     def test_window_draw(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
@@ -40,7 +46,13 @@ class TestFilebrowser(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.WindowFakePrint()
         sess.draw(window)
-        self.assertTrue(curses.A_BOLD in window.text['\n directory1'])
+        self.assertEqual(curses.A_BOLD, curses.A_BOLD & window.text['\n directory1'][0])
 
-
+    def test_selection_is_reversed_startup(self):
+        # at start time first entry is selected
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.WindowFakePrint()
+        sess.draw(window)
+        self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n directory1'][0])
 

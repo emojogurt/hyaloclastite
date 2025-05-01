@@ -16,6 +16,9 @@ class Hyaloclastite:
 
         keylist = list(listing_dict_unsorted.keys())
         keylist.sort()
+
+        if self.current_selected_file not in keylist:
+            self.current_selected_file = keylist[0]
         
         listing_dict = {}
         for fsobjname in keylist:
@@ -28,10 +31,12 @@ class Hyaloclastite:
             window.addstr(basename(self.current_directory))
             listing_dict = self.get_dir_contents()
             for listing_key,fsobject_entry in listing_dict.items():
+                parameters = 0
                 if fsobject_entry.is_dir():
-                    window.addstr("\n " + listing_key, curses.A_BOLD)
-                else:
-                    window.addstr("\n " + listing_key)
+                    parameters = parameters | curses.A_BOLD
+                if fsobject_entry.name == self.current_selected_file:
+                    parameters = parameters | curses.A_REVERSE
+                window.addstr("\n " + listing_key, parameters)
         window.refresh()
 
     def perform_filebrowser_action(self, window, control_char):
