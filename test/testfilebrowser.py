@@ -61,13 +61,14 @@ class TestFilebrowser(unittest.TestCase):
         sess.draw(window)
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n directory1'][0])
     
-#    def test_selection_is_reversed_other(self):
-#        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
-#        sess = Hyaloclastite('filebrowser', test_location)
-#        window = fakeCurses.WindowFakePrint()
-#        sess.current_select_file = 'file1'
-#        sess.draw(window)
-#        self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n file1'][0])
+    def test_selection_is_reversed_other(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.WindowFakePrint()
+        sess.start()
+        sess.current_selected_file = 'file1'
+        sess.draw(window)
+        self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n file1'][0])
 
 
 
