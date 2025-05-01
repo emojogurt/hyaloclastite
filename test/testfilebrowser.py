@@ -59,6 +59,7 @@ class TestFilebrowser(unittest.TestCase):
         window = fakeCurses.WindowFakePrint()
         sess.start()
         sess.draw(window)
+        self.assertEqual(0, sess.current_selected_file_number)
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n directory1'][0])
     
     def test_selection_is_reversed_other(self):

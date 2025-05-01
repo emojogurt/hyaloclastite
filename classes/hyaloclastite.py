@@ -19,7 +19,8 @@ class Hyaloclastite:
 
         if self.current_selected_file not in keylist:
             self.current_selected_file = keylist[0]
-        
+            self.current_selected_file_number = 0
+
         self.current_directory_listing = {}
         for fsobjname in keylist:
             self.current_directory_listing[fsobjname] = listing_dict_unsorted[fsobjname]
@@ -39,7 +40,9 @@ class Hyaloclastite:
         window.refresh()
 
     def perform_filebrowser_action(self, window, control_char):
-        pass
+        if control_char == curses.KEY_DOWN:
+            self.current_selected_file_number += 1
+            self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
 
     def perform_viewer_action(self, window, control_char):
         pass
@@ -100,4 +103,4 @@ class Hyaloclastite:
         self.current_directory = self.vault
         self.current_directory_listing = None
         self.current_selected_file = None
-
+        self.current_selected_file_number = None
