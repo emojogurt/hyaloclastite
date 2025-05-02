@@ -2,7 +2,7 @@
 import curses 
 
 from os import scandir
-from os.path import basename
+from os.path import basename, join
 
 class IncorrectModeException(Exception):
     pass
@@ -37,6 +37,12 @@ class Hyaloclastite:
                 if fsobject_entry.name == self.current_selected_file:
                     parameters = parameters | curses.A_REVERSE
                 window.addstr("\n " + listing_key, parameters)
+        elif self.mode == 'viewer':
+            window.addstr(basename(self.current_selected_file))
+            window.addstr('\n')
+            with open(join(self.current_directory, self.current_selected_file), 'r') as viewed_file:
+                for line in viewed_file.readlines():
+                    window.addstr(line)
         window.refresh()
 
     def perform_filebrowser_action(self, window, control_char):
@@ -50,7 +56,8 @@ class Hyaloclastite:
             self.mode = 'viewer'
 
     def perform_viewer_action(self, window, control_char):
-        pass
+        if control_char == ord('c'):
+            self.mode = 'filebrowser'
 
     def dispatch_action(self, window, control_char):
         """Sends the control character towards the appropriate handling function, depending on mode"""
@@ -68,6 +75,8 @@ class Hyaloclastite:
             return False
 
     def start(self):
+        # TODO remove this function and instead add a bool 'refresh_needed' that will be checked in 'draw' and set
+        # TODO (cont.) in every other place where a refresh might be needed
         if self.mode == 'filebrowser':
             self.get_dir_contents()
 
