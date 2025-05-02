@@ -55,3 +55,14 @@ class TestFilebrowser(unittest.TestCase):
         sess.draw(window)
         self.assertEqual(0, sess.current_selected_file_number)
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n directory1'][0])
+
+    def test_change_mode_to_view(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.WindowFakePrint()
+        sess.start()
+        sess.current_selected_file = 'file1'
+        sess.current_selected_file_number = 1
+        sess.perform_filebrowser_action(window, ord('v'))
+        self.assertEqual('viewer', sess.mode)
+

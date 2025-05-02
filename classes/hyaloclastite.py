@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import curses 
-from time import sleep
+
 from os import scandir
 from os.path import basename
 
@@ -43,9 +43,11 @@ class Hyaloclastite:
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
             self.current_selected_file_number += 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
-        if control_char == curses.KEY_UP and self.current_selected_file_number > 0:
+        elif control_char == curses.KEY_UP and self.current_selected_file_number > 0:
             self.current_selected_file_number -= 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
+        elif control_char == ord('v'):
+            self.mode = 'viewer'
 
     def perform_viewer_action(self, window, control_char):
         pass
