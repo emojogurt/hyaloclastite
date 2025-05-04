@@ -48,3 +48,24 @@ class TestViewer(unittest.TestCase):
         sess.current_selected_file_number = 2
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
+
+    def test_empty_file_no_exception(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault2")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = curses.newpad(4,4)
+        sess.start()
+        sess.current_selected_file = 'emptyfile'
+        sess.current_selected_file_number = 0
+        sess.dispatch_action(window, ord('v'))
+        sess.draw(window)
+
+    def test_empty_file_message_displayed(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault2")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.FakeWindow()
+        sess.start()
+        sess.current_selected_file = 'emptyfile'
+        sess.current_selected_file_number = 0
+        sess.dispatch_action(window, ord('v'))
+        sess.draw(window)
+        self.assertEqual("emptyfile\n<file is empty>", window.gettext())

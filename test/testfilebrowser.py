@@ -74,5 +74,9 @@ class TestFilebrowser(unittest.TestCase):
         sess.draw(window)
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n file1'][0])
 
-
-
+    def test_pad_resized_to_listing(self):
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = curses.newpad(1,1)
+        sess.start()
+        sess.draw(window)
