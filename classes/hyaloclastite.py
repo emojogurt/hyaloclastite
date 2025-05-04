@@ -42,7 +42,7 @@ class Hyaloclastite:
         elif self.mode == 'viewer':
             with open(join(self.current_directory, self.current_selected_file), 'r') as viewed_file:
                 content = viewed_file.readlines()
-                new_lines = len(content) + 1
+                new_lines = len(content) + 2
                 new_cols = max([len(x) for x in content])
                 title = basename(self.current_selected_file)
                 new_cols = max(new_cols, len(title)) + 1
