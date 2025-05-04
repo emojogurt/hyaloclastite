@@ -28,8 +28,10 @@ class Hyaloclastite:
     def draw(self, window):
         window.clear()
         if self.mode == 'filebrowser':
+            # new_rows = len(self.current_directory_listing) + 2
+            # new_cols = max([len(x) for x in list(self.current_directory_listing.keys())])
+            # window.resize(new_rows, new_cols)
             window.addstr(basename(self.current_directory))
-            
             for listing_key,fsobject_entry in self.current_directory_listing.items():
                 parameters = 0
                 if fsobject_entry.is_dir():
@@ -38,12 +40,18 @@ class Hyaloclastite:
                     parameters = parameters | curses.A_REVERSE
                 window.addstr("\n " + listing_key, parameters)
         elif self.mode == 'viewer':
-            window.addstr(basename(self.current_selected_file))
-            window.addstr('\n')
             with open(join(self.current_directory, self.current_selected_file), 'r') as viewed_file:
-                for line in viewed_file.readlines():
+                content = viewed_file.readlines()
+                new_lines = len(content) + 1
+                new_cols = max([len(x) for x in content])
+                title = basename(self.current_selected_file)
+                new_cols = max(new_cols, len(title)) + 1
+                window.resize(new_lines, new_cols)
+                window.addstr(title)
+                window.addstr('\n')
+                for line in content:
                     window.addstr(line)
-        window.refresh()
+        window.refresh(0, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
 
     def perform_filebrowser_action(self, window, control_char):
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
@@ -93,7 +101,8 @@ class Hyaloclastite:
     def run(self):
         """Starts the program with vault_name and initial_mode arguments.
         Takes care of terminal state cleanup."""
-        window = curses.initscr()
+        curses.initscr()
+        window = curses.newpad(20,20) # this should be initialised to be small and resized when new file or directory is opened
         curses.noecho()
         curses.curs_set(False)
         curses.cbreak()

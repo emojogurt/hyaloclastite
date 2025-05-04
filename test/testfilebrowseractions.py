@@ -15,7 +15,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_down_arrow_selects_next(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
-        window = fakeCurses.WindowFakePrint()
+        window = fakeCurses.FakeWindow()
         sess.start()
         sess.dispatch_action(window,curses.KEY_DOWN)
         sess.draw(window)
@@ -25,7 +25,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_no_down_movement_from_last(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
-        window = fakeCurses.WindowFakePrint()
+        window = fakeCurses.FakeWindow()
         sess.start()
         sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
@@ -37,7 +37,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_up_arrow_selects_previous(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
-        window = fakeCurses.WindowFakePrint()
+        window = fakeCurses.FakeWindow()
         sess.start()
         sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
@@ -49,7 +49,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_no_up_movement_from_first(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
-        window = fakeCurses.WindowFakePrint()
+        window = fakeCurses.FakeWindow()
         sess.start()
         sess.dispatch_action(window,curses.KEY_UP)
         sess.draw(window)
@@ -59,7 +59,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_change_mode_to_view(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
-        window = fakeCurses.WindowFakePrint()
+        window = fakeCurses.FakeWindow()
         sess.start()
         sess.current_selected_file = 'file1'
         sess.current_selected_file_number = 1

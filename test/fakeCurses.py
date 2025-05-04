@@ -1,30 +1,27 @@
 #!/usr/bin/python
 
-class WindowReturnChar:
-    def __init__(self, retchar):
-        self.retchar = retchar
-    def clear(self):
-        pass
-    def addstr(self, *args):
-        pass
-    def refresh(self):
-        pass
-    def getch(self):
-        return self.retchar
-
-class WindowFakePrint:
+class FakeWindow:
     def __init__(self):
         self.text = None
         self.prepared = {}
         self.called_clear = False
         self.called_refresh = False
+        self.retchar = None
+
+    def set_retchar(self, retchar):
+        self.retchar = retchar
+    def resize(self, lines, cols):
+        pass
     def clear(self):
         self.called_clear = True
-    def refresh(self):
+    def refresh(self, pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol):
         self.called_refresh = True
         self.text = self.prepared
     def addstr(self, text, *args):
         self.prepared[text] = args
-
+    def getmaxyx(self):
+        return
     def gettext(self):
         return "".join(list(self.text.keys()))
+    def getch(self):
+        return self.retchar

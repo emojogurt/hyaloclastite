@@ -1,9 +1,8 @@
 #!/usr/bin/python
-
+import curses
 import unittest
 import sys
 from os import path
-from unittest import mock
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
@@ -13,7 +12,9 @@ import fakeCurses
 class TestQuit(unittest.TestCase):
     def setUp(self):
         self.test_session = Hyaloclastite('filebrowser', '.')
+        curses.initscr()
 
     def test_quit_program(self):
-        window = fakeCurses.WindowReturnChar(ord('q'))
+        window = fakeCurses.FakeWindow()
+        window.set_retchar(ord('q'))
         self.assertEqual(0, self.test_session.main(window, 2, 3))
