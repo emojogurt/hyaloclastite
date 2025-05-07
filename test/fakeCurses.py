@@ -7,11 +7,14 @@ class FakeWindow:
         self.called_clear = False
         self.called_refresh = False
         self.retchar = None
+        self.window_COLS = 0
+        self.window_LINES = 0
 
     def set_retchar(self, retchar):
         self.retchar = retchar
     def resize(self, lines, cols):
-        pass
+        self.window_LINES = lines
+        self.window_COLS = cols
     def clear(self):
         self.called_clear = True
     def refresh(self, pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol):

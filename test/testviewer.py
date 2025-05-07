@@ -69,3 +69,17 @@ class TestViewer(unittest.TestCase):
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         self.assertEqual("emptyfile\n<file is empty>", window.gettext())
+
+    def test_window_not_smaller_than_screen(self):
+        # this is to always refresh at least the whole screen area, to avoid old contents polluting the screen
+        # when view changes
+        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.FakeWindow()
+        sess.start()
+        sess.current_selected_file = 'file1'
+        sess.current_selected_file_number = 1
+        sess.dispatch_action(window, ord('v'))
+        sess.draw(window)
+        self.assertGreaterEqual(window.window_COLS, curses.COLS)
+        self.assertGreaterEqual(window.window_LINES, curses.LINES)

@@ -74,9 +74,11 @@ class TestFilebrowser(unittest.TestCase):
         sess.draw(window)
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n file1'][0])
 
-    def test_pad_resized_to_listing(self):
+    def test_pad_not_smaller_than_screen(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
-        window = curses.newpad(1,1)
+        window = fakeCurses.FakeWindow()
         sess.start()
         sess.draw(window)
+        self.assertGreaterEqual(window.window_COLS, curses.COLS)
+        self.assertGreaterEqual(window.window_LINES, curses.LINES)

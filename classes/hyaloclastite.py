@@ -28,11 +28,11 @@ class Hyaloclastite:
     def draw(self, window):
         window.clear()
         if self.mode == 'filebrowser':
-            new_rows = len(self.current_directory_listing) + 2
+            new_lines = max(len(self.current_directory_listing), curses.LINES) + 2
             new_cols = max([len(x) for x in list(self.current_directory_listing.keys())])
             title = basename(self.current_directory)
-            new_cols = max(new_cols, len(title)) + 1
-            window.resize(new_rows, new_cols)
+            new_cols = max([new_cols, len(title), curses.COLS]) + 1
+            window.resize(new_lines, new_cols)
             window.addstr(title)
             for listing_key,fsobject_entry in self.current_directory_listing.items():
                 parameters = 0
@@ -46,10 +46,10 @@ class Hyaloclastite:
                 content = viewed_file.readlines()
                 if len(content) == 0:
                     content = ['<file is empty>']
-                new_lines = len(content) + 2
+                new_lines = max(len(content), curses.LINES) + 2
                 new_cols = max([len(x) for x in content])
                 title = basename(self.current_selected_file)
-                new_cols = max(new_cols, len(title)) + 1
+                new_cols = max([new_cols, len(title), curses.COLS]) + 1
                 window.resize(new_lines, new_cols)
                 window.addstr(title)
                 window.addstr('\n')
