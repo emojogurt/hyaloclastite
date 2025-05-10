@@ -4,9 +4,6 @@ import unittest
 import sys
 from os import path
 
-import fakeCurses
-import curses
-
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from classes.hyaloclastite import Hyaloclastite
