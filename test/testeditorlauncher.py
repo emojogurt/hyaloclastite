@@ -2,16 +2,17 @@
 
 import unittest
 import sys
-from os import path, environ
+from os import path, environ, remove
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-
-import fakeCurses
 
 from classes.hyaloclastite import Hyaloclastite
 
 class TestQuit(unittest.TestCase):
     def setUp(self):
+        self.base_directory = path.dirname(path.dirname(path.abspath(__file__)))
+        self.something_file_location = path.join(self.base_directory, 'test', 'filewithsomething.txt')
+        self.test_location = path.join(self.base_directory, 'test', "testvault1")
         try:
             self.origvalue = environ['EDITOR']
         except KeyError:
@@ -26,20 +27,23 @@ class TestQuit(unittest.TestCase):
         else:
             environ['EDITOR'] = self.origvalue
 
+        try:
+            remove(self.something_file_location)
+        except FileNotFoundError:
+            pass
+
     def test_launch_editor(self):
         environ['EDITOR'] = "./write_something.py"
-        base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-        something_file_location = path.join(base_directory, 'test', 'filewithsomething.txt')
-        test_location = path.join(base_directory, 'test', "testvault1")
-        with open(something_file_location, 'w') as file_with_something:
+
+        with open(self.something_file_location, 'w') as file_with_something:
             file_with_something.write('test')
-        sess = Hyaloclastite('filebrowser', test_location)
+        sess = Hyaloclastite('filebrowser', self.test_location)
         sess.start()
         sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.launch_editor()
 
-        with open(something_file_location, 'r') as file_with_something:
+        with open(self.something_file_location, 'r') as file_with_something:
             content = file_with_something.read()
         expected_content = "something"
         self.assertEqual(expected_content, content)
