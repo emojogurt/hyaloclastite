@@ -2,7 +2,7 @@
 
 import unittest
 import sys
-from os import path, environ
+from os import path, environ, remove
 
 import fakeCurses
 import curses
@@ -13,6 +13,9 @@ from classes.hyaloclastite import Hyaloclastite
 
 class TestFilebrowserActions(unittest.TestCase):
     def setUp(self):
+        self.base_directory = path.dirname(path.dirname(path.abspath(__file__)))
+        self.parrot_file_location = path.join(self.base_directory, 'test', 'parrotargs.txt')
+        self.test_location = path.join(self.base_directory, 'test', "testvault1")
         try:
             self.origvalue = environ['EDITOR']
         except KeyError:
@@ -27,10 +30,14 @@ class TestFilebrowserActions(unittest.TestCase):
         else:
             environ['EDITOR'] = self.origvalue
 
+        try:
+            remove(self.parrot_file_location)
+        except FileNotFoundError:
+            pass
+
 
     def test_down_arrow_selects_next(self):
-        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
-        sess = Hyaloclastite('filebrowser', test_location)
+        sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.start()
         sess.dispatch_action(window,curses.KEY_DOWN)
@@ -39,8 +46,7 @@ class TestFilebrowserActions(unittest.TestCase):
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n file1'][0])
 
     def test_no_down_movement_from_last(self):
-        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
-        sess = Hyaloclastite('filebrowser', test_location)
+        sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.start()
         sess.current_selected_file = 'file2'
@@ -51,8 +57,7 @@ class TestFilebrowserActions(unittest.TestCase):
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n file2'][0])
 
     def test_up_arrow_selects_previous(self):
-        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
-        sess = Hyaloclastite('filebrowser', test_location)
+        sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.start()
         sess.current_selected_file = 'file2'
@@ -63,8 +68,7 @@ class TestFilebrowserActions(unittest.TestCase):
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n file1'][0])
 
     def test_no_up_movement_from_first(self):
-        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
-        sess = Hyaloclastite('filebrowser', test_location)
+        sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.start()
         sess.dispatch_action(window,curses.KEY_UP)
@@ -73,8 +77,7 @@ class TestFilebrowserActions(unittest.TestCase):
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n directory1'][0])
 
     def test_change_mode_to_view(self):
-        test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
-        sess = Hyaloclastite('filebrowser', test_location)
+        sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.start()
         sess.current_selected_file = 'file1'
@@ -84,20 +87,18 @@ class TestFilebrowserActions(unittest.TestCase):
 
     def test_editor_called_with_params_from_filebrowser(self):
         environ['EDITOR'] = "./parrot.py"
-        base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-        parrot_file_location = path.join(base_directory, 'test', 'parrotargs.txt')
-        test_location = path.join(base_directory, 'test', "testvault1")
-        file2_location = path.join(base_directory, 'test', "testvault1", "file2")
-        with open(parrot_file_location, 'w') as parrot_file:
+
+        file2_location = path.join(self.base_directory, 'test', "testvault1", "file2")
+        with open(self.parrot_file_location, 'w') as parrot_file:
             parrot_file.write('test')
-        sess = Hyaloclastite('filebrowser', test_location)
+        sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.start()
         sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.perform_filebrowser_action(window, ord('e'))
 
-        with open(parrot_file_location, 'r') as parrot_file:
+        with open(self.parrot_file_location, 'r') as parrot_file:
             content = parrot_file.read()
         expected_content = "['" + str(path.abspath(file2_location)) + "']"
         self.assertEqual(expected_content, content)
