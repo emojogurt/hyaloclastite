@@ -1,11 +1,13 @@
 #!/usr/bin/python
-import curses 
+import curses
+import subprocess
 
-from os import scandir
+from os import scandir, environ
 from os.path import basename, join
 
 class IncorrectModeException(Exception):
     pass
+
 
 class Hyaloclastite:
     def get_dir_contents(self):
@@ -57,6 +59,10 @@ class Hyaloclastite:
                     window.addstr(line)
         window.refresh(0, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
 
+    def launch_editor(self):
+        editor = environ['EDITOR']
+        subprocess.run([editor, join(self.current_directory, self.current_selected_file)])
+
     def perform_filebrowser_action(self, window, control_char):
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
             self.current_selected_file_number += 1
@@ -66,6 +72,8 @@ class Hyaloclastite:
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
         elif control_char == ord('v'):
             self.mode = 'viewer'
+        elif control_char == ord('e'):
+            self.launch_editor()
 
     def perform_viewer_action(self, window, control_char):
         if control_char == ord('c'):

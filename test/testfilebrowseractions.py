@@ -2,7 +2,7 @@
 
 import unittest
 import sys
-from os import path
+from os import path, environ
 
 import fakeCurses
 import curses
@@ -12,6 +12,22 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from classes.hyaloclastite import Hyaloclastite
 
 class TestFilebrowserActions(unittest.TestCase):
+    def setUp(self):
+        try:
+            self.origvalue = environ['EDITOR']
+        except KeyError:
+            self.origvalue = None
+
+    def tearDown(self):
+        if self.origvalue is None:
+            try:
+                del environ['EDITOR']
+            except KeyError:
+                pass
+        else:
+            environ['EDITOR'] = self.origvalue
+
+
     def test_down_arrow_selects_next(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
@@ -66,3 +82,22 @@ class TestFilebrowserActions(unittest.TestCase):
         sess.dispatch_action(window, ord('v'))
         self.assertEqual('viewer', sess.mode)
 
+    def test_editor_called_with_params_from_filebrowser(self):
+        environ['EDITOR'] = "./parrot.py"
+        base_directory = path.dirname(path.dirname(path.abspath(__file__)))
+        parrot_file_location = path.join(base_directory, 'test', 'parrotargs.txt')
+        test_location = path.join(base_directory, 'test', "testvault1")
+        file2_location = path.join(base_directory, 'test', "testvault1", "file2")
+        with open(parrot_file_location, 'w') as parrot_file:
+            parrot_file.write('test')
+        sess = Hyaloclastite('filebrowser', test_location)
+        window = fakeCurses.FakeWindow()
+        sess.start()
+        sess.current_selected_file = 'file2'
+        sess.current_selected_file_number = 2
+        sess.perform_filebrowser_action(window, ord('e'))
+
+        with open(parrot_file_location, 'r') as parrot_file:
+            content = parrot_file.read()
+        expected_content = "['" + str(path.abspath(file2_location)) + "']"
+        self.assertEqual(expected_content, content)
