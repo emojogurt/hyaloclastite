@@ -71,7 +71,12 @@ class Hyaloclastite:
             self.current_selected_file_number -= 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
         elif control_char == ord('v'):
-            self.mode = 'viewer'
+            if not self.current_directory_listing[self.current_selected_file].is_dir():
+                self.mode = 'viewer'
+            else:
+                self.current_directory = join(self.current_directory, self.current_selected_file)
+                self.current_selected_file = None
+                self.get_dir_contents()
         elif control_char == ord('e'):
             curses.def_prog_mode()
             self.launch_editor()

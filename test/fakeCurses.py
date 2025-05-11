@@ -9,6 +9,7 @@ class FakeWindow:
         self.retchar = None
         self.window_COLS = 0
         self.window_LINES = 0
+        self.shouldileaveok = None
 
     def set_retchar(self, retchar):
         self.retchar = retchar
@@ -28,3 +29,5 @@ class FakeWindow:
         return "".join(list(self.text.keys()))
     def getch(self):
         return self.retchar
+    def leaveok(self, shouldi):
+        self.shouldileaveok = shouldi
