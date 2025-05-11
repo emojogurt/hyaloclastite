@@ -3,7 +3,8 @@ import curses
 import subprocess
 
 from os import scandir, environ
-from os.path import basename, join, samefile
+from os.path import basename, join, samefile, normpath
+import pathlib
 
 class IncorrectModeException(Exception):
     pass
@@ -23,7 +24,10 @@ class Hyaloclastite:
             self.current_selected_file = keylist[0]
             self.current_selected_file_number = 0
 
-        self.current_directory_listing = {}
+        if samefile(self.current_directory, self.vault):
+            self.current_directory_listing = {}
+        else:
+            self.current_directory_listing = {'..' : pathlib.Path(normpath(join(self.current_directory, '..')))}
         for fsobjname in keylist:
             self.current_directory_listing[fsobjname] = listing_dict_unsorted[fsobjname]
 
