@@ -3,7 +3,7 @@ import curses
 import subprocess
 
 from os import scandir, environ
-from os.path import basename, join
+from os.path import basename, join, samefile
 
 class IncorrectModeException(Exception):
     pass
@@ -32,7 +32,10 @@ class Hyaloclastite:
         if self.mode == 'filebrowser':
             new_lines = max(len(self.current_directory_listing), curses.LINES) + 2
             new_cols = max([len(x) for x in list(self.current_directory_listing.keys())])
-            title = basename(self.current_directory)
+            if samefile(self.current_directory, self.vault):
+                title = basename(self.current_directory)
+            else:
+                title = basename(self.vault) + "/" + basename(self.current_directory)
             new_cols = max([new_cols, len(title), curses.COLS]) + 1
             window.resize(new_lines, new_cols)
             window.addstr(title)

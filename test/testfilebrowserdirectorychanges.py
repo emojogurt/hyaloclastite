@@ -21,5 +21,5 @@ class TestFilebrowserActions(unittest.TestCase):
         sess.current_selected_file_number = 0
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
-        self.assertEqual("directory1\n file3", window.gettext())
+        self.assertEqual("testvault1/directory1\n file3", window.gettext())
 
