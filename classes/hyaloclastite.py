@@ -73,7 +73,10 @@ class Hyaloclastite:
         elif control_char == ord('v'):
             self.mode = 'viewer'
         elif control_char == ord('e'):
+            curses.def_prog_mode()
             self.launch_editor()
+            curses.reset_prog_mode()
+            window.leaveok(True)
 
     def perform_viewer_action(self, window, control_char):
         if control_char == ord('c'):
@@ -118,8 +121,10 @@ class Hyaloclastite:
         curses.noecho()
         curses.curs_set(False)
         curses.cbreak()
+        curses.curs_set(0)
         window.keypad(True)
         window.nodelay(False)
+        window.leaveok(True)
 
         try:
             self.main(window, self.vault, self.mode)
