@@ -15,6 +15,11 @@ class TestFilebrowser(unittest.TestCase):
     def setUp(self):
         curses.initscr()
 
+    def tearDown(self):
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
+
     def test_get_known_dir_contents(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)

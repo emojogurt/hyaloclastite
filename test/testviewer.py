@@ -15,6 +15,11 @@ class TestViewer(unittest.TestCase):
     def setUp(self):
         curses.initscr()
 
+    def tearDown(self):
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
+
     def test_window_draw(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)

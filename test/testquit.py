@@ -14,6 +14,11 @@ class TestQuit(unittest.TestCase):
         self.test_session = Hyaloclastite('filebrowser', '.')
         curses.initscr()
 
+    def tearDown(self):
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
+
     def test_quit_program(self):
         window = fakeCurses.FakeWindow()
         window.set_retchar(ord('q'))

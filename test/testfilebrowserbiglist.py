@@ -31,6 +31,10 @@ class TestFilebrowser(unittest.TestCase):
             os.remove(os.path.join(self.dirname,filename))
         os.removedirs(self.dirname)
 
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
+
     def test_pad_resized_to_listing(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', self.dirname)
         sess = Hyaloclastite('filebrowser', test_location)
