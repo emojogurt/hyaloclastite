@@ -93,6 +93,11 @@ class Hyaloclastite:
     def perform_viewer_action(self, window, control_char):
         if control_char == ord('c'):
             self.mode = 'filebrowser'
+        elif control_char == ord('e'):
+            curses.def_prog_mode()
+            self.launch_editor()
+            curses.reset_prog_mode()
+            window.leaveok(True)
 
     def dispatch_action(self, window, control_char):
         """Sends the control character towards the appropriate handling function, depending on mode"""

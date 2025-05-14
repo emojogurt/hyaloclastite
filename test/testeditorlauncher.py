@@ -32,13 +32,15 @@ class TestQuit(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-    def test_launch_editor(self):
+    def test_launch_editor_filebrowser(self):
         environ['EDITOR'] = "./write_something.py"
 
         with open(self.something_file_location, 'w') as file_with_something:
             file_with_something.write('test')
         sess = Hyaloclastite('filebrowser', self.test_location)
         sess.start()
+        # note: something is selected here, but it doesn't really matter
+        # the "editor" here is simply a program that writes a hardcoded value to a hardcoded path
         sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.launch_editor()

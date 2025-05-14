@@ -93,9 +93,8 @@ class TestFilebrowserActions(unittest.TestCase):
             parrot_file.write('test')
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
         sess.current_selected_file = 'file2'
-        sess.current_selected_file_number = 2
+
         sess.perform_filebrowser_action(window, ord('e'))
 
         with open(self.parrot_file_location, 'r') as parrot_file:
