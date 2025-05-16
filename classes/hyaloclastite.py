@@ -37,7 +37,7 @@ class Hyaloclastite:
             new_lines = max(len(self.current_directory_listing), curses.LINES) + 2
             new_cols = max([len(x) for x in list(self.current_directory_listing.keys())])
             if samefile(self.current_directory, self.vault):
-                title = basename(self.current_directory)
+                title = basename(self.vault)
             else:
                 title = basename(self.vault) + "/" + basename(self.current_directory)
             new_cols = max([new_cols, len(title), curses.COLS]) + 1
