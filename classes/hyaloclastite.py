@@ -3,7 +3,7 @@ import curses
 import subprocess
 
 from os import scandir, environ
-from os.path import basename, join, samefile, normpath
+from os.path import abspath, basename, join, samefile, normpath
 import pathlib
 
 class IncorrectModeException(Exception):
@@ -81,7 +81,7 @@ class Hyaloclastite:
                 self.mode = 'viewer'
             else:
                 # TODO: normalise the path here to avoid seeing .. when coming up
-                self.current_directory = join(self.current_directory, self.current_selected_file)
+                self.current_directory = normpath(join(self.current_directory, self.current_selected_file))
                 self.current_selected_file = None
                 self.get_dir_contents()
         elif control_char == ord('e'):
@@ -157,7 +157,7 @@ class Hyaloclastite:
         self.mode = initial_mode
         self.vault = vault
         self.exit_character = ord('q')
-        self.current_directory = self.vault
+        self.current_directory = abspath(self.vault)
         self.current_directory_listing = None
         self.current_selected_file = None
         self.current_selected_file_number = None

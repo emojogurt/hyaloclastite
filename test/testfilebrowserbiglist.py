@@ -16,7 +16,7 @@ class TestFilebrowser(unittest.TestCase):
         curses.initscr()
         file1name = 'a'*254
         genfilename = 'a_file'
-        self.dirname = "testvault4"
+        self.dirname = "testvault_generated"
         os.mkdir(self.dirname)
         with open(os.path.join(self.dirname,file1name), 'w') as file1:
             file1.write('test')

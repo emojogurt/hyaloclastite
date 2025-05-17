@@ -10,7 +10,7 @@ from classes.hyaloclastite import Hyaloclastite
 
 class TestInitialise(unittest.TestCase):
     def test_create_session(self):
-        sess = Hyaloclastite(1, 2)
+        sess = Hyaloclastite(1, '2')
         self.assertTrue(isinstance(sess, Hyaloclastite))
 
     def test_fields_initialised(self):
