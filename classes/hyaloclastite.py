@@ -20,16 +20,15 @@ class Hyaloclastite:
         keylist = list(listing_dict_unsorted.keys())
         keylist.sort()
 
-        if self.current_selected_file not in keylist:
-            self.current_selected_file = keylist[0]
-            self.current_selected_file_number = 0
-
         if samefile(self.current_directory, self.vault):
             self.current_directory_listing = {}
         else:
             self.current_directory_listing = {'..' : pathlib.Path(normpath(join(self.current_directory, '..')))}
         for fsobjname in keylist:
             self.current_directory_listing[fsobjname] = listing_dict_unsorted[fsobjname]
+
+        self.current_selected_file = next(iter(self.current_directory_listing))
+        self.current_selected_file_number = 0
 
     def draw(self, window):
         window.clear()
@@ -47,7 +46,7 @@ class Hyaloclastite:
                 parameters = 0
                 if fsobject_entry.is_dir():
                     parameters = parameters | curses.A_BOLD
-                if fsobject_entry.name == self.current_selected_file:
+                if listing_key == self.current_selected_file:
                     parameters = parameters | curses.A_REVERSE
                 window.addstr("\n " + listing_key, parameters)
         elif self.mode == 'viewer':
@@ -81,6 +80,7 @@ class Hyaloclastite:
             if not self.current_directory_listing[self.current_selected_file].is_dir():
                 self.mode = 'viewer'
             else:
+                # TODO: normalise the path here to avoid seeing .. when coming up
                 self.current_directory = join(self.current_directory, self.current_selected_file)
                 self.current_selected_file = None
                 self.get_dir_contents()
