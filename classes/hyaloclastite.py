@@ -80,7 +80,6 @@ class Hyaloclastite:
             if not self.current_directory_listing[self.current_selected_file].is_dir():
                 self.mode = 'viewer'
             else:
-                # TODO: normalise the path here to avoid seeing .. when coming up
                 self.current_directory = normpath(join(self.current_directory, self.current_selected_file))
                 self.current_selected_file = None
                 self.get_dir_contents()
