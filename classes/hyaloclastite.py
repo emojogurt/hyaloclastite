@@ -12,6 +12,11 @@ class IncorrectModeException(Exception):
 
 class Hyaloclastite:
     def get_dir_contents(self):
+        """
+        :return: nothing
+        this function lists contents of the directory where the program currently is, taking care to add a link
+        to parent dir, unless the program is already at the vault top level
+        """
         raw_listing = scandir(self.current_directory)
         listing_dict_unsorted = {}
         for fsobject in raw_listing:
@@ -31,6 +36,11 @@ class Hyaloclastite:
         self.current_selected_file_number = 0
 
     def draw(self, window):
+        """
+        :param window: curses pad, where the content is supposed to be drawn
+        :return: nothing
+        this function draws contents appropriate for the current mode in the given window
+        """
         window.clear()
         if self.mode == 'filebrowser':
             new_lines = max(len(self.current_directory_listing), curses.LINES) + 2
@@ -66,10 +76,20 @@ class Hyaloclastite:
         window.refresh(0, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
 
     def launch_editor(self):
+        """
+        :return: nothing
+        this function runs whatever command saved under EDITOR environment variable
+        """
         editor = environ['EDITOR']
         subprocess.run([editor, join(self.current_directory, self.current_selected_file)])
 
     def perform_filebrowser_action(self, window, control_char):
+        """
+        :param window: window where the contents of the program are drawn, only passed here to make sure it is returned
+        to a proper state after the editor finishes
+        :param control_char: an integer representing a key, resulting from getch() as per curses specification
+        :return: nothing
+        """
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
             self.current_selected_file_number += 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
@@ -90,6 +110,12 @@ class Hyaloclastite:
             window.leaveok(True)
 
     def perform_viewer_action(self, window, control_char):
+        """
+        :param window: window where the contents of the program are drawn, only passed here to make sure it is returned
+        to a proper state after the editor finishes
+        :param control_char: an integer representing a key, resulting from getch() as per curses specification
+        :return: nothing
+        """
         if control_char == ord('c'):
             self.mode = 'filebrowser'
         elif control_char == ord('e'):
@@ -99,7 +125,11 @@ class Hyaloclastite:
             window.leaveok(True)
 
     def dispatch_action(self, window, control_char):
-        """Sends the control character towards the appropriate handling function, depending on mode"""
+        """
+        :param window: window where the contents of the program are drawn, only passed here to make sure it is returned
+        to a proper state after the editor finishes
+        :param control_char: an integer representing a key, resulting from getch() as per curses specification
+        Sends the control character towards the appropriate handling function, depending on mode"""
         if self.mode == 'filebrowser':
             self.perform_filebrowser_action(window, control_char)
         elif self.mode == 'viewer':
@@ -108,6 +138,10 @@ class Hyaloclastite:
             raise IncorrectModeException
     
     def check_for_exit(self, control_char):
+        """
+        :param control_char: an integer representing a key, resulting from getch() as per curses specification
+        :return: True if the control_char represents a key used to close the program, False otherwise
+        """
         if control_char == self.exit_character:
             return True
         else:
