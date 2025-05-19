@@ -99,6 +99,7 @@ class Hyaloclastite:
         elif control_char == ord('v'):
             if not self.current_directory_listing[self.current_selected_file].is_dir():
                 self.mode = 'viewer'
+                self.current_position_in_file = 0
             else:
                 self.current_directory = normpath(join(self.current_directory, self.current_selected_file))
                 self.current_selected_file = None
@@ -118,6 +119,10 @@ class Hyaloclastite:
         """
         if control_char == ord('c'):
             self.mode = 'filebrowser'
+        elif control_char == curses.KEY_DOWN:
+            self.current_position_in_file += 1
+        elif control_char == curses.KEY_UP:
+            self.current_position_in_file -= 1
         elif control_char == ord('e'):
             curses.def_prog_mode()
             self.launch_editor()
@@ -194,3 +199,4 @@ class Hyaloclastite:
         self.current_directory_listing = None
         self.current_selected_file = None
         self.current_selected_file_number = None
+        self.current_position_in_file = None
