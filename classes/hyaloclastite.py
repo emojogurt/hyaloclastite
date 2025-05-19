@@ -59,6 +59,7 @@ class Hyaloclastite:
                 if listing_key == self.current_selected_file:
                     parameters = parameters | curses.A_REVERSE
                 window.addstr("\n " + listing_key, parameters)
+            window.refresh(0, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
         elif self.mode == 'viewer':
             with open(join(self.current_directory, self.current_selected_file), 'r') as viewed_file:
                 content = viewed_file.readlines()
@@ -73,7 +74,8 @@ class Hyaloclastite:
                 window.addstr('\n')
                 for line in content:
                     window.addstr(line)
-        window.refresh(0, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
+            window.refresh(self.current_position_in_file, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
+
 
     def launch_editor(self):
         """
@@ -119,9 +121,9 @@ class Hyaloclastite:
         """
         if control_char == ord('c'):
             self.mode = 'filebrowser'
-        elif control_char == curses.KEY_DOWN:
+        elif control_char == curses.KEY_DOWN and self.current_position_in_file < window.getmaxyx()[0] + 1 - curses.LINES:
             self.current_position_in_file += 1
-        elif control_char == curses.KEY_UP:
+        elif control_char == curses.KEY_UP and self.current_position_in_file > 0:
             self.current_position_in_file -= 1
         elif control_char == ord('e'):
             curses.def_prog_mode()
