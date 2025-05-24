@@ -1,11 +1,14 @@
 # hyaloclastite
 
-## Opis - aspiracje
-Skrypty do obsługi terminalowej (curses) notatek w formacie kompatybilnym z obsidianem.
-
 ## Opis
-Hyaloclastite is a volcanoclastic accumulation or breccia consisting of glass.
-TODO
+Aspiracją projektu jest stworzenie aplikacji terminalowej (curses) do obsługi notatek w formacie kompatybilnym z obsidianem.
+Póki co zadowolę się, żeby pozwalała obsługiwać notatki w formacie kompatybilnym w stopniu z jakiego korzystam na codzień.
+
+## Description
+Hyaloclastite is a small curses-based python project, aiming to create a terminal application allowing for organised note-taking.
+Hyaloclastite is a volcanoclastic accumulation or breccia consisting of glass. The name was chosen because:
+a. this project is supposed to be obsidian-compatible to a degree
+b. this project is probably going to end up as a horrible agglomerate of bad coding practices.
 
 ## Projekt highlevelowy
 Dostępne mają być trzy tryby:
