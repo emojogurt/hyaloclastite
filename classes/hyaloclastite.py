@@ -95,8 +95,6 @@ class Hyaloclastite:
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
             self.current_selected_file_number += 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
-            while self.current_selected_file_number > self.current_browser_view_offset + curses.LINES - 2:
-                self.current_browser_view_offset += curses.LINES
         elif control_char == curses.KEY_UP and self.current_selected_file_number > 0:
             self.current_selected_file_number -= 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
@@ -113,6 +111,11 @@ class Hyaloclastite:
             self.launch_editor()
             curses.reset_prog_mode()
             window.leaveok(True)
+        # adjust file browser view position:
+        while self.current_selected_file_number > self.current_browser_view_offset + curses.LINES - 2:
+            self.current_browser_view_offset += curses.LINES
+        if self.current_selected_file_number < curses.LINES - 1: #self.current_browser_view_offset + curses.LINES - 2:
+            self.current_browser_view_offset =0 #+= curses.LINES
 
     def perform_viewer_action(self, window, control_char):
         """
