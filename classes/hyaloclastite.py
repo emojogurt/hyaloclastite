@@ -59,7 +59,7 @@ class Hyaloclastite:
                 if listing_key == self.current_selected_file:
                     parameters = parameters | curses.A_REVERSE
                 window.addstr("\n " + listing_key, parameters)
-            window.refresh(0, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
+            window.refresh(self.current_browser_view_offset, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
         elif self.mode == 'viewer':
             with open(join(self.current_directory, self.current_selected_file), 'r') as viewed_file:
                 content = viewed_file.readlines()
@@ -95,6 +95,8 @@ class Hyaloclastite:
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
             self.current_selected_file_number += 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
+            while self.current_selected_file_number > self.current_browser_view_offset + curses.LINES - 2:
+                self.current_browser_view_offset += curses.LINES
         elif control_char == curses.KEY_UP and self.current_selected_file_number > 0:
             self.current_selected_file_number -= 1
             self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
@@ -201,4 +203,5 @@ class Hyaloclastite:
         self.current_directory_listing = None
         self.current_selected_file = None
         self.current_selected_file_number = None
+        self.current_browser_view_offset = 0
         self.current_position_in_file = None
