@@ -39,7 +39,7 @@ class TestViewerActions(unittest.TestCase):
     def test_initial_position_zero(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = self.file_name
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -48,7 +48,7 @@ class TestViewerActions(unittest.TestCase):
     def test_downarrow_scrolls_down(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = self.file_name
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -59,7 +59,7 @@ class TestViewerActions(unittest.TestCase):
     def test_uparrow_scrolls_up(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = self.file_name
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -71,7 +71,7 @@ class TestViewerActions(unittest.TestCase):
     def test_no_scroll_down_when_bottom_reached(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = self.file_name
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -83,7 +83,7 @@ class TestViewerActions(unittest.TestCase):
     def test_no_scroll_up_when_top_reached(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = self.file_name
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -96,7 +96,7 @@ class TestViewerActions(unittest.TestCase):
     def test_refresh_called_with_correct_args(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = self.file_name
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))

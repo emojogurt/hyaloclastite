@@ -39,7 +39,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_down_arrow_selects_next(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.dispatch_action(window,curses.KEY_DOWN)
         sess.draw(window)
         self.assertEqual(1, sess.current_selected_file_number)
@@ -48,7 +48,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_no_down_movement_from_last(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.dispatch_action(window, curses.KEY_DOWN)
@@ -59,7 +59,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_up_arrow_selects_previous(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.dispatch_action(window, curses.KEY_UP)
@@ -70,7 +70,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_no_up_movement_from_first(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.dispatch_action(window,curses.KEY_UP)
         sess.draw(window)
         self.assertEqual(0, sess.current_selected_file_number)
@@ -79,7 +79,7 @@ class TestFilebrowserActions(unittest.TestCase):
     def test_change_mode_to_view(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'file1'
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -93,7 +93,7 @@ class TestFilebrowserActions(unittest.TestCase):
             parrot_file.write('test')
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'file2'
         sess.perform_filebrowser_action(window, ord('e'))
 

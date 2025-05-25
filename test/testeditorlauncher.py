@@ -38,7 +38,7 @@ class TestQuit(unittest.TestCase):
         with open(self.something_file_location, 'w') as file_with_something:
             file_with_something.write('test')
         sess = Hyaloclastite('filebrowser', self.test_location)
-        sess.start()
+        sess.get_dir_contents()
         # note: something is selected here, but it doesn't really matter
         # the "editor" here is simply a program that writes a hardcoded value to a hardcoded path
         sess.current_selected_file = 'file2'

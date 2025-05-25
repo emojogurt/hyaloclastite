@@ -14,8 +14,8 @@ class Hyaloclastite:
     def get_dir_contents(self):
         """
         :return: nothing
-        this function lists contents of the directory where the program currently is, taking care to add a link
-        to parent dir, unless the program is already at the vault top level
+        this function lists contents of the directory where the program currently is,
+        taking care to add a link to parent dir, unless the program is already at the vault top level
         """
         raw_listing = scandir(self.current_directory)
         listing_dict_unsorted = {}
@@ -43,6 +43,9 @@ class Hyaloclastite:
         """
         window.clear()
         if self.mode == 'filebrowser':
+            if self.refresh_needed:
+                self.get_dir_contents()
+                self.refresh_needed = False
             new_lines = max(len(self.current_directory_listing), curses.LINES) + 2
             new_cols = max([len(x) for x in list(self.current_directory_listing.keys())])
             if samefile(self.current_directory, self.vault):
@@ -105,7 +108,7 @@ class Hyaloclastite:
             else:
                 self.current_directory = normpath(join(self.current_directory, self.current_selected_file))
                 self.current_selected_file = None
-                self.get_dir_contents()
+                self.refresh_needed = True
         elif control_char == ord('e'):
             curses.def_prog_mode()
             self.launch_editor()
@@ -148,7 +151,7 @@ class Hyaloclastite:
             self.perform_viewer_action(window, control_char)
         else:
             raise IncorrectModeException
-    
+
     def check_for_exit(self, control_char):
         """
         :param control_char: an integer representing a key, resulting from getch() as per curses specification
@@ -159,15 +162,9 @@ class Hyaloclastite:
         else:
             return False
 
-    def start(self):
-        # TODO remove this function and instead add a bool 'refresh_needed' that will be checked in 'draw' and set
-        # TODO (cont.) in every other place where a refresh might be needed
-        if self.mode == 'filebrowser':
-            self.get_dir_contents()
-
     def main(self, window, vault, mode):
         """Main loop of the program, taking care of gathering user input and providing it to appropriate functions"""
-        self.start()
+        self.refresh_needed = True
         while True:
             self.draw(window)
             control_char = window.getch()
@@ -202,6 +199,7 @@ class Hyaloclastite:
         self.mode = initial_mode
         self.vault = vault
         self.exit_character = ord('q')
+        self.refresh_needed = None
         self.current_directory = abspath(self.vault)
         self.current_directory_listing = None
         self.current_selected_file = None

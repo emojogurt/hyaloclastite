@@ -12,11 +12,19 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from classes.hyaloclastite import Hyaloclastite
 
 class TestFilebrowserActions(unittest.TestCase):
+    def setUp(self):
+        curses.initscr()
+
+    def tearDown(self):
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
+
     def test_enter_a_subdirectory(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'directory1'
         sess.current_selected_file_number = 0
         sess.dispatch_action(window, ord('v'))
@@ -27,10 +35,9 @@ class TestFilebrowserActions(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault4")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
-        sess.current_selected_file = 'directory1'
-        sess.current_selected_file_number = 0
+        sess.get_dir_contents()
         sess.dispatch_action(window, ord('v'))
+        sess.draw(window)
         sess.current_selected_file = 'subdirectory1'
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -41,7 +48,7 @@ class TestFilebrowserActions(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'directory1'
         sess.current_selected_file_number = 0
         sess.dispatch_action(window, ord('v'))
@@ -52,13 +59,15 @@ class TestFilebrowserActions(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault4")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'directory1'
         sess.current_selected_file_number = 0
         sess.dispatch_action(window, ord('v'))
+        sess.draw(window)
         sess.current_selected_file = 'subdirectory1'
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
+        sess.draw(window)
         sess.current_selected_file = '..'
         sess.current_selected_file_number = 0
         sess.dispatch_action(window, ord('v'))

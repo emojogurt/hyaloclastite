@@ -39,7 +39,7 @@ class TestFilebrowser(unittest.TestCase):
     def test_pad_resized_to_listing(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.draw(window)
         self.assertEqual(500, window.window_LINES)
         self.assertEqual(255, window.window_COLS)
@@ -47,7 +47,7 @@ class TestFilebrowser(unittest.TestCase):
     def test_move_page_at_bottom(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         # assumption - at least 4 lines in the test window
         highlighted_before_name = self.genfilename + str(curses.LINES - 3)
         sess.current_selected_file = highlighted_before_name
@@ -60,7 +60,7 @@ class TestFilebrowser(unittest.TestCase):
     def test_move_page_at_bottom_next_page(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         # assumption - at least 4 lines in the test window
         highlighted_before_name = self.genfilename + str(curses.LINES * 2 - 3)
         sess.current_selected_file = highlighted_before_name
@@ -73,7 +73,7 @@ class TestFilebrowser(unittest.TestCase):
     def test_move_page_at_top(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         # assumption - at least 4 lines in the test window
         highlighted_before_name = self.genfilename + str(curses.LINES - 2)
         sess.current_selected_file = highlighted_before_name
@@ -86,7 +86,7 @@ class TestFilebrowser(unittest.TestCase):
     def test_move_page_at_top_next_page(self):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         # assumption - at least 4 lines in the test window
         highlighted_before_name = self.genfilename + str(curses.LINES * 2 - 2)
         sess.current_selected_file = highlighted_before_name

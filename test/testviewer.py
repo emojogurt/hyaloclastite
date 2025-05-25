@@ -24,7 +24,7 @@ class TestViewer(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'file1'
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -36,7 +36,7 @@ class TestViewer(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'file1'
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
@@ -48,7 +48,7 @@ class TestViewer(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         window = curses.newpad(4,4)
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.dispatch_action(window, ord('v'))
@@ -58,7 +58,7 @@ class TestViewer(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault2")
         sess = Hyaloclastite('filebrowser', test_location)
         window = curses.newpad(4,4)
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'emptyfile'
         sess.current_selected_file_number = 0
         sess.dispatch_action(window, ord('v'))
@@ -68,7 +68,7 @@ class TestViewer(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault2")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'emptyfile'
         sess.current_selected_file_number = 0
         sess.dispatch_action(window, ord('v'))
@@ -81,7 +81,7 @@ class TestViewer(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
-        sess.start()
+        sess.get_dir_contents()
         sess.current_selected_file = 'file1'
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))

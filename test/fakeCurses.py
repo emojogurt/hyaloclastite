@@ -19,6 +19,7 @@ class FakeWindow:
         self.window_COLS = cols
     def clear(self):
         self.called_clear = True
+        self.prepared = {}
     def refresh(self, pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol):
         self.called_refresh = True
         self.text = self.prepared
