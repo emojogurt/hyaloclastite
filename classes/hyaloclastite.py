@@ -114,8 +114,8 @@ class Hyaloclastite:
         # adjust file browser view position:
         while self.current_selected_file_number > self.current_browser_view_offset + curses.LINES - 2:
             self.current_browser_view_offset += curses.LINES
-        if self.current_selected_file_number < curses.LINES - 1: #self.current_browser_view_offset + curses.LINES - 2:
-            self.current_browser_view_offset =0 #+= curses.LINES
+        while self.current_selected_file_number < self.current_browser_view_offset - 1:
+            self.current_browser_view_offset -= curses.LINES
 
     def perform_viewer_action(self, window, control_char):
         """

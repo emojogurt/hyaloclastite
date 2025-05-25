@@ -92,6 +92,6 @@ class TestFilebrowser(unittest.TestCase):
         sess.current_selected_file = highlighted_before_name
         sess.current_selected_file_number = curses.LINES * 2 - 1 # one greater because of the first file being 'a'*254
         sess.dispatch_action(window, '0')
-        sess.dispatch_action(window,curses.KEY_DOWN)
+        sess.dispatch_action(window,curses.KEY_UP)
         sess.draw(window)
         self.assertEqual([curses.LINES, 0, 0, 0, curses.LINES - 1, curses.COLS - 1], window.last_refresh_args)
