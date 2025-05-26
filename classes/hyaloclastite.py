@@ -28,7 +28,7 @@ class Hyaloclastite:
         if samefile(self.current_directory, self.vault):
             self.current_directory_listing = {}
         else:
-            self.current_directory_listing = {'..' : pathlib.Path(normpath(join(self.current_directory, '..')))}
+            self.current_directory_listing = {'..' : pathlib.Path(join(self.current_directory, '..'))}
         for fsobjname in keylist:
             self.current_directory_listing[fsobjname] = listing_dict_unsorted[fsobjname]
 
