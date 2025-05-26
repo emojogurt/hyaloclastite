@@ -26,13 +26,12 @@ class Hyaloclastite:
         keylist.sort()
 
         if samefile(self.current_directory, self.vault):
-            self.current_directory_listing = {}
+            self.current_directory_listing = []
         else:
-            self.current_directory_listing = {'..' : pathlib.Path(join(self.current_directory, '..'))}
+            self.current_directory_listing = [pathlib.Path(join(self.current_directory, '..'))]
         for fsobjname in keylist:
-            self.current_directory_listing[fsobjname] = listing_dict_unsorted[fsobjname]
+            self.current_directory_listing.append(listing_dict_unsorted[fsobjname])
 
-        self.current_selected_file = next(iter(self.current_directory_listing))
         self.current_selected_file_number = 0
 
     def draw(self, window):
@@ -47,7 +46,7 @@ class Hyaloclastite:
                 self.get_dir_contents()
                 self.dir_read_needed = False
             new_lines = max(len(self.current_directory_listing), curses.LINES) + 2
-            new_cols = max([len(x) for x in list(self.current_directory_listing.keys())])
+            new_cols = max([len(x.name) for x in self.current_directory_listing])
             if samefile(self.current_directory, self.vault):
                 title = basename(self.vault)
             else:
@@ -55,22 +54,22 @@ class Hyaloclastite:
             new_cols = max([new_cols, len(title), curses.COLS]) + 1
             window.resize(new_lines, new_cols)
             window.addstr(title)
-            for listing_key,fsobject_entry in self.current_directory_listing.items():
+            for fs_entry_number, fsobject_entry in enumerate(self.current_directory_listing):
                 parameters = 0
                 if fsobject_entry.is_dir():
                     parameters = parameters | curses.A_BOLD
-                if listing_key == self.current_selected_file:
+                if fs_entry_number == self.current_selected_file_number:
                     parameters = parameters | curses.A_REVERSE
-                window.addstr("\n " + listing_key, parameters)
+                window.addstr("\n " + fsobject_entry.name, parameters)
             window.refresh(self.current_browser_view_offset, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
         elif self.mode == 'viewer':
-            with open(join(self.current_directory, self.current_selected_file), 'r') as viewed_file:
+            with open(join(self.current_directory, self.current_directory_listing[self.current_selected_file_number].name), 'r') as viewed_file:
                 content = viewed_file.readlines()
                 if len(content) == 0:
                     content = ['<file is empty>']
                 new_lines = max(len(content), curses.LINES) + 2
                 new_cols = max([len(x) for x in content])
-                title = basename(self.current_selected_file)
+                title = basename(self.current_directory_listing[self.current_selected_file_number].name)
                 new_cols = max([new_cols, len(title), curses.COLS]) + 1
                 window.resize(new_lines, new_cols)
                 window.addstr(title)
@@ -86,7 +85,7 @@ class Hyaloclastite:
         this function runs whatever command saved under EDITOR environment variable
         """
         editor = environ['EDITOR']
-        subprocess.run([editor, join(self.current_directory, self.current_selected_file)])
+        subprocess.run([editor, join(self.current_directory, self.current_directory_listing[self.current_selected_file_number].name)])
 
     def perform_filebrowser_action(self, window, control_char):
         """
@@ -97,17 +96,14 @@ class Hyaloclastite:
         """
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
             self.current_selected_file_number += 1
-            self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
         elif control_char == curses.KEY_UP and self.current_selected_file_number > 0:
             self.current_selected_file_number -= 1
-            self.current_selected_file = list(self.current_directory_listing.keys())[self.current_selected_file_number]
         elif control_char == ord('v'):
-            if not self.current_directory_listing[self.current_selected_file].is_dir():
+            if not self.current_directory_listing[self.current_selected_file_number].is_dir():
                 self.mode = 'viewer'
                 self.current_position_in_file = 0
             else:
-                self.current_directory = normpath(join(self.current_directory, self.current_selected_file))
-                self.current_selected_file = None
+                self.current_directory = normpath(join(self.current_directory, self.current_directory_listing[self.current_selected_file_number].name))
                 self.dir_read_needed = True
         elif control_char == ord('e'):
             curses.def_prog_mode()
@@ -202,7 +198,6 @@ class Hyaloclastite:
         self.dir_read_needed = None
         self.current_directory = abspath(self.vault)
         self.current_directory_listing = None
-        self.current_selected_file = None
         self.current_selected_file_number = None
         self.current_browser_view_offset = 0
         self.current_position_in_file = None

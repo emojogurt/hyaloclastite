@@ -41,7 +41,6 @@ class TestQuit(unittest.TestCase):
         sess.get_dir_contents()
         # note: something is selected here, but it doesn't really matter
         # the "editor" here is simply a program that writes a hardcoded value to a hardcoded path
-        sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.launch_editor()
 

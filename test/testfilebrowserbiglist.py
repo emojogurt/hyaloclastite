@@ -49,8 +49,6 @@ class TestFilebrowser(unittest.TestCase):
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
         # assumption - at least 4 lines in the test window
-        highlighted_before_name = self.genfilename + str(curses.LINES - 3)
-        sess.current_selected_file = highlighted_before_name
         sess.current_selected_file_number = curses.LINES - 2 # one greater because of the first file being 'a'*254
         sess.dispatch_action(window, '0')
         sess.dispatch_action(window,curses.KEY_DOWN)
@@ -62,8 +60,6 @@ class TestFilebrowser(unittest.TestCase):
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
         # assumption - at least 4 lines in the test window
-        highlighted_before_name = self.genfilename + str(curses.LINES * 2 - 3)
-        sess.current_selected_file = highlighted_before_name
         sess.current_selected_file_number = curses.LINES * 2 - 2 # one greater because of the first file being 'a'*254
         sess.dispatch_action(window, '0')
         sess.dispatch_action(window,curses.KEY_DOWN)
@@ -75,8 +71,6 @@ class TestFilebrowser(unittest.TestCase):
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
         # assumption - at least 4 lines in the test window
-        highlighted_before_name = self.genfilename + str(curses.LINES - 2)
-        sess.current_selected_file = highlighted_before_name
         sess.current_selected_file_number = curses.LINES - 1 # one greater because of the first file being 'a'*254
         sess.dispatch_action(window,'0') # empty action to scroll down first
         sess.dispatch_action(window,curses.KEY_UP)
@@ -88,8 +82,6 @@ class TestFilebrowser(unittest.TestCase):
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
         # assumption - at least 4 lines in the test window
-        highlighted_before_name = self.genfilename + str(curses.LINES * 2 - 2)
-        sess.current_selected_file = highlighted_before_name
         sess.current_selected_file_number = curses.LINES * 2 - 1 # one greater because of the first file being 'a'*254
         sess.dispatch_action(window, '0')
         sess.dispatch_action(window,curses.KEY_UP)
