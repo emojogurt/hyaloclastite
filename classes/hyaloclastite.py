@@ -43,9 +43,9 @@ class Hyaloclastite:
         """
         window.clear()
         if self.mode == 'filebrowser':
-            if self.refresh_needed:
+            if self.dir_read_needed:
                 self.get_dir_contents()
-                self.refresh_needed = False
+                self.dir_read_needed = False
             new_lines = max(len(self.current_directory_listing), curses.LINES) + 2
             new_cols = max([len(x) for x in list(self.current_directory_listing.keys())])
             if samefile(self.current_directory, self.vault):
@@ -108,7 +108,7 @@ class Hyaloclastite:
             else:
                 self.current_directory = normpath(join(self.current_directory, self.current_selected_file))
                 self.current_selected_file = None
-                self.refresh_needed = True
+                self.dir_read_needed = True
         elif control_char == ord('e'):
             curses.def_prog_mode()
             self.launch_editor()
@@ -164,7 +164,7 @@ class Hyaloclastite:
 
     def main(self, window, vault, mode):
         """Main loop of the program, taking care of gathering user input and providing it to appropriate functions"""
-        self.refresh_needed = True
+        self.dir_read_needed = True
         while True:
             self.draw(window)
             control_char = window.getch()
@@ -199,7 +199,7 @@ class Hyaloclastite:
         self.mode = initial_mode
         self.vault = vault
         self.exit_character = ord('q')
-        self.refresh_needed = None
+        self.dir_read_needed = None
         self.current_directory = abspath(self.vault)
         self.current_directory_listing = None
         self.current_selected_file = None
