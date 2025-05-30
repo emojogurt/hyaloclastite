@@ -22,4 +22,4 @@ class TestQuit(unittest.TestCase):
     def test_quit_program(self):
         window = fakeCurses.FakeWindow()
         window.set_retchar(ord('q'))
-        self.assertEqual(0, self.test_session.main(window, 2, 3))
+        self.assertEqual(0, self.test_session.main(window))

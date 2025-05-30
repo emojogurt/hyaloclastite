@@ -1,4 +1,12 @@
 #!/usr/bin/python
+
+"""
+This is the main definition of hyaloclastite.
+To use it, you will need to create an istance of hyaloclastite class and call its run method.
+Arguments that must be supplied are mode (for now only 'filebrowser' is supported), and
+vault (top-level directory where your content resides).
+"""
+
 import curses
 import subprocess
 
@@ -7,15 +15,20 @@ from os.path import abspath, basename, join, samefile, normpath
 import pathlib
 
 class IncorrectModeException(Exception):
-    pass
+    """Thrown when the mode is not one of the recognised ones, 'filebrowser' or 'viewer'"""
 
 
 class Hyaloclastite:
+    """
+    Main class. Create instance of it, supplying mode and vault.
+    Mode can for now only be 'filebrowser'.
+    Vault is the top-level directory where your content resides.
+    """
     def get_dir_contents(self):
         """
         :return: nothing
         this function lists contents of the directory where the program currently is,
-        taking care to add a link to parent dir, unless the program is already at the vault top level
+        taking care to add a link to parent dir unless the program is already at the vault top level
         """
         raw_listing = scandir(self.current_directory)
         listing_dict_unsorted = {}
@@ -46,7 +59,7 @@ class Hyaloclastite:
                 self.get_dir_contents()
                 self.dir_read_needed = False
             new_lines = max(len(self.current_directory_listing), curses.LINES) + 2
-            new_cols = max([len(x.name) for x in self.current_directory_listing])
+            new_cols = max(len(x.name) for x in self.current_directory_listing)
             if samefile(self.current_directory, self.vault):
                 title = basename(self.vault)
             else:
@@ -63,12 +76,14 @@ class Hyaloclastite:
                 window.addstr("\n " + fsobject_entry.name, parameters)
             window.refresh(self.current_browser_view_offset, 0, 0, 0, curses.LINES - 1, curses.COLS - 1)
         elif self.mode == 'viewer':
-            with open(join(self.current_directory, self.current_directory_listing[self.current_selected_file_number].name), 'r') as viewed_file:
+            filepath = self.current_directory_listing[self.current_selected_file_number].name
+            filepath = join(self.current_directory, filepath)
+            with open(filepath, 'r', encoding=self.file_encoding) as viewed_file:
                 content = viewed_file.readlines()
                 if len(content) == 0:
                     content = ['<file is empty>']
                 new_lines = max(len(content), curses.LINES) + 2
-                new_cols = max([len(x) for x in content])
+                new_cols = max(len(x) for x in content)
                 title = basename(self.current_directory_listing[self.current_selected_file_number].name)
                 new_cols = max([new_cols, len(title), curses.COLS]) + 1
                 window.resize(new_lines, new_cols)
@@ -85,13 +100,16 @@ class Hyaloclastite:
         this function runs whatever command saved under EDITOR environment variable
         """
         editor = environ['EDITOR']
-        subprocess.run([editor, join(self.current_directory, self.current_directory_listing[self.current_selected_file_number].name)])
+        filepath = self.current_directory_listing[self.current_selected_file_number].name
+        filepath = join(self.current_directory, filepath)
+        subprocess.run([editor, filepath], check=False)
 
     def perform_filebrowser_action(self, window, control_char):
         """
-        :param window: window where the contents of the program are drawn, only passed here to make sure it is returned
-        to a proper state after the editor finishes
-        :param control_char: an integer representing a key, resulting from getch() as per curses specification
+        :param window: window where the contents of the program are drawn,
+        only passed here to make sure it is returned to a proper state after the editor finishes
+        :param control_char: an integer representing a key, resulting from getch() as per
+        curses specification
         :return: nothing
         """
         if control_char == curses.KEY_DOWN and self.current_selected_file_number < len(self.current_directory_listing) - 1:
@@ -103,7 +121,9 @@ class Hyaloclastite:
                 self.mode = 'viewer'
                 self.current_position_in_file = 0
             else:
-                self.current_directory = normpath(join(self.current_directory, self.current_directory_listing[self.current_selected_file_number].name))
+                subdirpath = self.current_directory_listing[self.current_selected_file_number].name
+                subdirpath = join(self.current_directory, subdirpath)
+                self.current_directory = normpath(subdirpath)
                 self.dir_read_needed = True
         elif control_char == ord('e'):
             curses.def_prog_mode()
@@ -118,9 +138,10 @@ class Hyaloclastite:
 
     def perform_viewer_action(self, window, control_char):
         """
-        :param window: window where the contents of the program are drawn, only passed here to make sure it is returned
-        to a proper state after the editor finishes
-        :param control_char: an integer representing a key, resulting from getch() as per curses specification
+        :param window: window where the contents of the program are drawn,
+        only passed here to make sure it is returned to a proper state after the editor finishes
+        :param control_char: an integer representing a key, resulting from getch() as per
+        curses specification
         :return: nothing
         """
         if control_char == ord('c'):
@@ -137,9 +158,10 @@ class Hyaloclastite:
 
     def dispatch_action(self, window, control_char):
         """
-        :param window: window where the contents of the program are drawn, only passed here to make sure it is returned
-        to a proper state after the editor finishes
-        :param control_char: an integer representing a key, resulting from getch() as per curses specification
+        :param window: window where the contents of the program are drawn,
+        only passed here to make sure it is returned to a proper state after the editor finishes
+        :param control_char: an integer representing a key, resulting from getch() as per
+        curses specification
         Sends the control character towards the appropriate handling function, depending on mode"""
         if self.mode == 'filebrowser':
             self.perform_filebrowser_action(window, control_char)
@@ -150,16 +172,14 @@ class Hyaloclastite:
 
     def check_for_exit(self, control_char):
         """
-        :param control_char: an integer representing a key, resulting from getch() as per curses specification
-        :return: True if the control_char represents a key used to close the program, False otherwise
+        :param control_char: an integer representing a key, resulting from getch() as per
+        curses specification
+        :return: True if the control_char is the key used to close the program, False otherwise
         """
-        if control_char == self.exit_character:
-            return True
-        else:
-            return False
+        return bool(control_char == self.exit_character)
 
-    def main(self, window, vault, mode):
-        """Main loop of the program, taking care of gathering user input and providing it to appropriate functions"""
+    def main(self, window):
+        """Main loop of the program, gathers user input and provides it to appropriate functions"""
         self.dir_read_needed = True
         while True:
             self.draw(window)
@@ -172,7 +192,7 @@ class Hyaloclastite:
         """Starts the program with vault_name and initial_mode arguments.
         Takes care of terminal state cleanup."""
         curses.initscr()
-        window = curses.newpad(20,20) # this should be initialised to be small and resized when new file or directory is opened
+        window = curses.newpad(20,20) # resized when new file or directory is opened
         curses.noecho()
         curses.curs_set(False)
         curses.cbreak()
@@ -182,7 +202,7 @@ class Hyaloclastite:
         window.leaveok(True)
 
         try:
-            self.main(window, self.vault, self.mode)
+            self.main(window)
         except Exception as e:
             raise e
         finally:
@@ -195,6 +215,7 @@ class Hyaloclastite:
         self.mode = initial_mode
         self.vault = vault
         self.exit_character = ord('q')
+        self.file_encoding = 'utf-8'
         self.dir_read_needed = None
         self.current_directory = abspath(self.vault)
         self.current_directory_listing = None
