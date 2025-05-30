@@ -25,8 +25,7 @@ class TestViewer(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file1'
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = 1 # file1
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         self.assertTrue(window.called_clear)
@@ -37,8 +36,7 @@ class TestViewer(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file1'
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = 1 # file1
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         self.assertEqual("file1\ntest content\nof file 1\nnothing to see here", window.gettext())
@@ -49,8 +47,7 @@ class TestViewer(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', test_location)
         window = curses.newpad(4,4)
         sess.get_dir_contents()
-        sess.current_selected_file = 'file2'
-        sess.current_selected_file_number = 2
+        sess.current_selected_file_number = 2 # file2
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
 
@@ -59,8 +56,7 @@ class TestViewer(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', test_location)
         window = curses.newpad(4,4)
         sess.get_dir_contents()
-        sess.current_selected_file = 'emptyfile'
-        sess.current_selected_file_number = 0
+        sess.current_selected_file_number = 0 # emptyfile, which is an empty file indeed
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
 
@@ -69,8 +65,7 @@ class TestViewer(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'emptyfile'
-        sess.current_selected_file_number = 0
+        sess.current_selected_file_number = 0 # emptyfile
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         self.assertEqual("emptyfile\n<file is empty>", window.gettext())
@@ -82,8 +77,7 @@ class TestViewer(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file1'
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = 1 # file1
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         self.assertGreaterEqual(window.window_COLS, curses.COLS)

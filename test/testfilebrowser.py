@@ -24,7 +24,7 @@ class TestFilebrowser(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         sess.get_dir_contents()
-        contents = list(fsobject.name for fsobject in sess.current_directory_listing.values())
+        contents = [fsobject.name for fsobject in sess.current_directory_listing]
         self.assertIn('directory1', contents)
         self.assertIn('file1', contents)
         self.assertIn('file2', contents)
@@ -33,7 +33,7 @@ class TestFilebrowser(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         sess.get_dir_contents()
-        self.assertEqual('directory1', sess.current_selected_file)
+        self.assertEqual(0, sess.current_selected_file_number)
 
     def test_window_draw(self):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
@@ -75,7 +75,7 @@ class TestFilebrowser(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file1'
+        sess.current_selected_file_number = 1
         sess.draw(window)
         self.assertEqual(curses.A_REVERSE, curses.A_REVERSE & window.text['\n file1'][0])
 

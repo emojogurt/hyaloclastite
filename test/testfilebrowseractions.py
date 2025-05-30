@@ -49,7 +49,6 @@ class TestFilebrowserActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.dispatch_action(window, curses.KEY_DOWN)
         sess.draw(window)
@@ -60,7 +59,6 @@ class TestFilebrowserActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file2'
         sess.current_selected_file_number = 2
         sess.dispatch_action(window, curses.KEY_UP)
         sess.draw(window)
@@ -80,7 +78,6 @@ class TestFilebrowserActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file1'
         sess.current_selected_file_number = 1
         sess.dispatch_action(window, ord('v'))
         self.assertEqual('viewer', sess.mode)
@@ -94,7 +91,7 @@ class TestFilebrowserActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file2'
+        sess.current_selected_file_number = 2
         sess.perform_filebrowser_action(window, ord('e'))
 
         with open(self.parrot_file_location, 'r') as parrot_file:

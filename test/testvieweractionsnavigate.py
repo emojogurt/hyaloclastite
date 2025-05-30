@@ -15,6 +15,7 @@ class TestViewerActions(unittest.TestCase):
     def setUp(self):
         curses.initscr()
         self.file_name = 'a_file'
+        self.file_number = 0
         self.directory_name = "testvault_generated"
         self.base_directory = path.dirname(path.dirname(path.abspath(__file__)))
         self.test_location = path.join(self.base_directory, self.directory_name)
@@ -40,8 +41,7 @@ class TestViewerActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = self.file_name
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = self.file_number # will be self.file_name = a_file
         sess.dispatch_action(window, ord('v'))
         self.assertEqual(sess.current_position_in_file, 0)
 
@@ -49,8 +49,7 @@ class TestViewerActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = self.file_name
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = self.file_number # will be self.file_name = a_file
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         sess.perform_viewer_action(window, curses.KEY_DOWN)
@@ -60,8 +59,7 @@ class TestViewerActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = self.file_name
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = self.file_number # will be self.file_name = a_file
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         sess.current_position_in_file = 3
@@ -72,8 +70,7 @@ class TestViewerActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = self.file_name
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = self.file_number # will be self.file_name = a_file
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         for i in range(60):
@@ -84,8 +81,7 @@ class TestViewerActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = self.file_name
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = self.file_number # will be self.file_name = a_file
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         sess.perform_viewer_action(window, curses.KEY_UP)
@@ -97,8 +93,7 @@ class TestViewerActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = self.file_name
-        sess.current_selected_file_number = 1
+        sess.current_selected_file_number = self.file_number # will be self.file_name = a_file
         sess.dispatch_action(window, ord('v'))
         sess.draw(window)
         sess.perform_viewer_action(window, curses.KEY_DOWN)

@@ -38,8 +38,7 @@ class TestViewerActions(unittest.TestCase):
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
         sess.get_dir_contents()
-        sess.current_selected_file = 'file2'
-        sess.current_selected_file_number = 2
+        sess.current_selected_file_number = 2 # file2
         sess.dispatch_action(window, ord('v'))
         self.assertEqual('viewer', sess.mode)
         sess.perform_viewer_action(window, ord('c')) # TODO - allow for customised controls, no hardcoded values
@@ -53,7 +52,8 @@ class TestViewerActions(unittest.TestCase):
             parrot_file.write('test')
         sess = Hyaloclastite('filebrowser', self.test_location)
         window = fakeCurses.FakeWindow()
-        sess.current_selected_file = 'file2'
+        sess.get_dir_contents()
+        sess.current_selected_file_number = 2 # file2
 
         sess.perform_viewer_action(window, ord('e'))
 

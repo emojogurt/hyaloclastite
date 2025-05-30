@@ -13,6 +13,7 @@ class TestMain(unittest.TestCase):
         test_location = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'test', "testvault1")
         sess = Hyaloclastite('filebrowser', test_location)
         sess.get_dir_contents()
-        self.assertIn('directory1', list(sess.current_directory_listing.keys()))
-        self.assertIn('file1', list(sess.current_directory_listing.keys()))
-        self.assertIn('file2', list(sess.current_directory_listing.keys()))
+        current_directory_listing_names = [ x.name for x in sess.current_directory_listing]
+        self.assertIn('directory1', current_directory_listing_names)
+        self.assertIn('file1', current_directory_listing_names)
+        self.assertIn('file2', current_directory_listing_names)
